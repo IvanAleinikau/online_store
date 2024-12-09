@@ -13,6 +13,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  # Log
+  pretty_dio_logger: ^1.4.0
+
   # Service
   freezed: ^2.5.7
   json_annotation: ^4.9.0
