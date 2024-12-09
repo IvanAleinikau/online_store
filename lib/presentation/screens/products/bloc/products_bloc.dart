@@ -19,26 +19,52 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     this._getProductsUseCase,
   ) : super(const ProductsState.loading()) {
     on<_ProductsFetchEvent>(_handleFetchEvent);
+    on<_ProductsFetchNextPageEvent>(_handleFetchNextPageEvent);
   }
 
   final GetProductsUseCase _getProductsUseCase;
 
   static const _defaultLimit = 30;
-  var _currentPage = 0;
 
   Future<void> _handleFetchEvent(
     _ProductsFetchEvent event,
     Emitter<ProductsState> emit,
   ) async {
-    final data = await _getProductsUseCase.call(
-      RequestEntity(
-        limit: _defaultLimit,
-        skip: _currentPage * _defaultLimit,
-      ),
-    );
+    final data = await _getProductsUseCase.call(RequestEntity(limit: _defaultLimit, skip: 0));
+
+    final totalPages = data.total / _defaultLimit;
 
     emit(
-      ProductsState.success(products: data.products),
+      ProductsState.success(
+        products: data.products,
+        currentPage: 0,
+        totalPages: totalPages.ceil(),
+      ),
+    );
+  }
+
+  Future<void> _handleFetchNextPageEvent(
+    _ProductsFetchNextPageEvent event,
+    Emitter<ProductsState> emit,
+  ) async {
+    await state.mapOrNull(
+      success: (state) async {
+        final nextPage = state.currentPage + 1;
+
+        final data = await _getProductsUseCase.call(
+          RequestEntity(
+            limit: _defaultLimit,
+            skip: _defaultLimit * nextPage,
+          ),
+        );
+
+        emit(
+          state.copyWith(
+            products: [...state.products, ...data.products],
+            currentPage: nextPage,
+          ),
+        );
+      },
     );
   }
 }

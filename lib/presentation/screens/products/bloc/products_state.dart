@@ -9,5 +9,7 @@ class ProductsState with _$ProductsState {
   /// State when success occurs
   const factory ProductsState.success({
     required List<ProductsEntity> products,
+    required int currentPage,
+    required int totalPages,
   }) = _$ProductsSuccessState;
 }

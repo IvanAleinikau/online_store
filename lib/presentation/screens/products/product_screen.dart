@@ -40,7 +40,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
               loading: (_) => const AppLoadingWidget(),
               success: (state) => NotificationListener<ScrollEndNotification>(
                 onNotification: (notification) {
-                  if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {}
+                  if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
+                    bloc.add(const ProductsEvent.nextPage());
+                  }
                   return false;
                 },
                 child: GridView.builder(
