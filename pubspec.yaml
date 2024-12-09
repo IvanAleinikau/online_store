@@ -45,6 +45,9 @@ dependencies:
   # Native
   flutter_native_splash: ^2.4.2
 
+  # UI
+  cached_network_image: ^3.4.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

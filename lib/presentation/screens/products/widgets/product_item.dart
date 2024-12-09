@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:online_shop/domain/entity/products/products_entity.dart';
+import 'package:online_shop/presentation/components/buttons/app_button.dart';
 import 'package:online_shop/presentation/utils/extension/num_extension.dart';
 import 'package:online_shop/presentation/utils/theme/app_palette.dart';
 import 'package:online_shop/presentation/utils/theme/app_styles.dart';
@@ -11,6 +13,7 @@ class ProductItem extends StatelessWidget {
     super.key,
     required this.entity,
     required this.onTap,
+    required this.onAddToCart,
   });
 
   /// Product entity
@@ -18,6 +21,9 @@ class ProductItem extends StatelessWidget {
 
   /// On Tap callback
   final VoidCallback onTap;
+
+  /// On Add to cart callback
+  final VoidCallback onAddToCart;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +39,8 @@ class ProductItem extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Image.network(
-              entity.images.first,
+            CachedNetworkImage(
+              imageUrl: entity.images.first,
               height: 100,
               width: 100,
             ),
@@ -42,12 +48,19 @@ class ProductItem extends StatelessWidget {
             Text(
               entity.title,
               textAlign: TextAlign.center,
+              maxLines: 2,
               style: AppStyles.regularBigStyle(),
             ),
             12.height,
             Text(
               '${entity.price}\$',
               style: AppStyles.regularSmallStyle(color: Palette.grey700),
+            ),
+            24.height,
+            AppButton.filled(
+              text: 'Add to Card',
+              width: double.maxFinite,
+              onTap: onAddToCart,
             ),
           ],
         ),

@@ -11,5 +11,6 @@ abstract class Palette {
   static const Color red = Color(0xFFF44336);
   static const Color transparent = Colors.transparent;
 
+  static const Color grey500 = Color(0xFF9E9E9E);
   static const Color grey700 = Color(0xFF616161);
 }

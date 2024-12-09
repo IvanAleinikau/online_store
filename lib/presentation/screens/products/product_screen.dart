@@ -51,7 +51,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 16,
-                    childAspectRatio: 0.58,
+                    childAspectRatio: 0.64,
                   ),
                   itemCount: state.products.length,
                   itemBuilder: (context, index) {
@@ -59,6 +59,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     return ProductItem(
                       entity: product,
                       onTap: () {},
+                      onAddToCart: () {},
                     );
                   },
                 ),
