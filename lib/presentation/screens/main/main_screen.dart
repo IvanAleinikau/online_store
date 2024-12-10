@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:online_shop/presentation/screens/main/enum/navigation_bar_type_enum.dart';
 import 'package:online_shop/presentation/screens/products/product_screen.dart';
+import 'package:online_shop/presentation/screens/shopping_cart/shopping_cart_screen.dart';
 import 'package:online_shop/presentation/utils/theme/app_palette.dart';
 
 /// Main screen
@@ -40,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
         return Scaffold(
           body: switch (activeTab) {
             NavigationBarTypeEnum.products => const ProductsScreen(),
-            NavigationBarTypeEnum.shoppingCart => const SizedBox.shrink(),
+            NavigationBarTypeEnum.shoppingCart => const ShoppingCartScreen(),
           },
           bottomNavigationBar: BottomNavigationBar(
             items: _bottomTabs

@@ -11,5 +11,6 @@ class ProductsState with _$ProductsState {
     required List<ProductsEntity> products,
     required int currentPage,
     required int totalPages,
+    required List<ProductsEntity> cartProducts,
   }) = _$ProductsSuccessState;
 }

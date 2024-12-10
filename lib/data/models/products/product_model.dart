@@ -15,6 +15,7 @@ class ProductModel with _$ProductModel {
     @JsonKey(name: 'price') required double? price,
     @JsonKey(name: 'images') required List<String>? images,
     @JsonKey(name: 'thumbnail') required String? thumbnail,
+    @JsonKey(name: '_') required int? count,
   }) = _ProductModel;
 
   /// From json method
