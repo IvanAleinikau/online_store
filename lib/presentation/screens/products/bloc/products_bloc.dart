@@ -40,19 +40,25 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     Emitter<ProductsState> emit,
   ) async {
     final data = await _getProductsUseCase.call(RequestEntity(limit: _defaultLimit, skip: 0));
-    final cartProducts = await _getCartProductsUseCase.call(Nothing());
 
-    final products = _sortProducts(cartProducts, data.products);
+    await data.fold(
+      (_) async => emit(const ProductsState.error()),
+      (data) async {
+        final cartProducts = await _getCartProductsUseCase.call(Nothing());
 
-    final totalPages = data.total / _defaultLimit;
+        final products = _sortProducts(cartProducts, data.products);
 
-    emit(
-      ProductsState.success(
-        products: products,
-        currentPage: 0,
-        totalPages: totalPages.ceil(),
-        cartProducts: cartProducts,
-      ),
+        final totalPages = data.total / _defaultLimit;
+
+        emit(
+          ProductsState.success(
+            products: products,
+            currentPage: 0,
+            totalPages: totalPages.ceil(),
+            cartProducts: cartProducts,
+          ),
+        );
+      },
     );
   }
 
@@ -71,9 +77,14 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           ),
         );
 
-        final products = _sortProducts(state.cartProducts, [...state.products, ...data.products]);
+        data.fold(
+          (_) => emit(const ProductsState.error()),
+          (data) {
+            final products = _sortProducts(state.cartProducts, [...state.products, ...data.products]);
 
-        emit(state.copyWith(products: products, currentPage: nextPage));
+            emit(state.copyWith(products: products, currentPage: nextPage));
+          },
+        );
       },
     );
   }

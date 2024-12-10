@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:online_shop/presentation/components/app_badge.dart';
 import 'package:online_shop/presentation/screens/main/enum/navigation_bar_type_enum.dart';
-import 'package:online_shop/presentation/screens/products/product_screen.dart';
+import 'package:online_shop/presentation/screens/products/products_screen.dart';
 import 'package:online_shop/presentation/screens/shopping_cart/shopping_cart_screen.dart';
 import 'package:online_shop/presentation/utils/theme/app_palette.dart';
 

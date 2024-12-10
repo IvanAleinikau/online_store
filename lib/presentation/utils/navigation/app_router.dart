@@ -11,5 +11,9 @@ class AppRouter extends RootStackRouter {
           path: '/main',
           initial: true,
         ),
+        AutoRoute(
+          page: ProductRoute.page,
+          path: '/product',
+        ),
       ];
 }

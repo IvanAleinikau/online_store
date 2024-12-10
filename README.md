@@ -1,16 +1,20 @@
 # online_shop
 
-A new Flutter project.
+A Test Flutter project
 
 ## Getting Started
+ 
+# How to run app
+1) Install Flutter v3.24.3
+2) run in terminal "flutter clean"
+3) run in terminal "pub get"
+4) run in terminal "flutter pub run build_runner build --delete-conflicting-outputs"
+5) run in terminal "flutter run --release"
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Tech Stack
+Framework: Flutter v3.24.3
+State management: BLoC + Freezed
+Networking: Dio + Retrofit
+DI: get_it + Injectable
+Navigation: auto_route
+Local Storage: shared_preferences

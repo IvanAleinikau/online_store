@@ -1,9 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:online_shop/data/utilities/bloc/bloc_factory.dart';
+import 'package:online_shop/presentation/components/app_error_widget.dart';
 import 'package:online_shop/presentation/components/app_loading_widget.dart';
 import 'package:online_shop/presentation/components/product_item.dart';
 import 'package:online_shop/presentation/screens/products/bloc/products_bloc.dart';
+import 'package:online_shop/presentation/utils/navigation/app_router.gr.dart';
 import 'package:online_shop/presentation/utils/theme/app_palette.dart';
 
 /// Products Screen
@@ -46,6 +49,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             final bloc = context.read<ProductsBloc>();
 
             return state.map(
+              error: (_) => const AppErrorWidget(),
               loading: (_) => const AppLoadingWidget(),
               success: (state) => NotificationListener<ScrollEndNotification>(
                 onNotification: (notification) {
@@ -67,7 +71,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     final product = state.products.elementAt(index);
                     return ProductItem(
                       entity: product,
-                      onTap: () {},
+                      onTap: () async {
+                        await context.router.push(ProductRoute(entity: product));
+                        bloc.add(const ProductsEvent.fetch());
+                      },
                       onAddToCart: (entity) => bloc.add(ProductsEvent.addToCart(entity: entity)),
                       onCountChanged: (int value) => bloc.add(
                         ProductsEvent.changeProductCount(
