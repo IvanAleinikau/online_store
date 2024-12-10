@@ -11,7 +11,13 @@ import 'package:online_shop/presentation/utils/theme/app_palette.dart';
 /// This screen displays all selected products available for purchase.
 class ShoppingCartScreen extends StatefulWidget {
   /// Default
-  const ShoppingCartScreen({super.key});
+  const ShoppingCartScreen({
+    super.key,
+    required this.onCartAmountChanged,
+  });
+
+  /// Callback for update cart badge
+  final ValueChanged<int> onCartAmountChanged;
 
   @override
   State<ShoppingCartScreen> createState() => _ShoppingCartScreenState();
@@ -33,7 +39,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           const event = CartEvent.fetch();
           return context.read<BlocFactory>().create<CartBloc>()..add(event);
         },
-        child: BlocBuilder<CartBloc, CartState>(
+        child: BlocConsumer<CartBloc, CartState>(
+          listener: (context, state) {
+            state.mapOrNull(success: (state) => widget.onCartAmountChanged(state.products.length));
+          },
           builder: (context, state) {
             final bloc = context.read<CartBloc>();
 

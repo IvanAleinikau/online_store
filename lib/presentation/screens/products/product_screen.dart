@@ -10,10 +10,16 @@ import 'package:online_shop/presentation/utils/theme/app_palette.dart';
 /// This screen displays all products available for purchase.
 class ProductsScreen extends StatefulWidget {
   /// Default constructor
-  const ProductsScreen({super.key});
+  const ProductsScreen({
+    super.key,
+    required this.onCartAmountChanged,
+  });
 
   @override
   State<ProductsScreen> createState() => _ProductsScreenState();
+
+  /// Callback for update cart badge
+  final ValueChanged<int> onCartAmountChanged;
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
@@ -32,7 +38,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
           const event = ProductsEvent.fetch();
           return context.read<BlocFactory>().create<ProductsBloc>()..add(event);
         },
-        child: BlocBuilder<ProductsBloc, ProductsState>(
+        child: BlocConsumer<ProductsBloc, ProductsState>(
+          listener: (context, state) {
+            state.mapOrNull(success: (state) => widget.onCartAmountChanged(state.cartProducts.length));
+          },
           builder: (context, state) {
             final bloc = context.read<ProductsBloc>();
 

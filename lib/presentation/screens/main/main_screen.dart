@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:online_shop/presentation/components/app_badge.dart';
 import 'package:online_shop/presentation/screens/main/enum/navigation_bar_type_enum.dart';
 import 'package:online_shop/presentation/screens/products/product_screen.dart';
 import 'package:online_shop/presentation/screens/shopping_cart/shopping_cart_screen.dart';
@@ -22,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   final _activeTabNotifier = ValueNotifier(NavigationBarTypeEnum.products);
+  final _badgeNotifier = ValueNotifier(0);
 
   void _onItemTapped(int index) {
     _activeTabNotifier.value = _bottomTabs.firstWhere((tab) => tab.tabIndex == index);
@@ -29,6 +31,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
+    _badgeNotifier.dispose();
     _activeTabNotifier.dispose();
     super.dispose();
   }
@@ -40,19 +43,29 @@ class _MainScreenState extends State<MainScreen> {
       builder: (_, activeTab, __) {
         return Scaffold(
           body: switch (activeTab) {
-            NavigationBarTypeEnum.products => const ProductsScreen(),
-            NavigationBarTypeEnum.shoppingCart => const ShoppingCartScreen(),
+            NavigationBarTypeEnum.products => ProductsScreen(
+                onCartAmountChanged: (int value) => _badgeNotifier.value = value,
+              ),
+            NavigationBarTypeEnum.shoppingCart => ShoppingCartScreen(
+                onCartAmountChanged: (int value) => _badgeNotifier.value = value,
+              ),
           },
           bottomNavigationBar: BottomNavigationBar(
             items: _bottomTabs
                 .map(
                   (tab) => BottomNavigationBarItem(
-                    icon: Icon(
-                      switch (tab) {
-                        NavigationBarTypeEnum.products => Icons.home,
-                        NavigationBarTypeEnum.shoppingCart => Icons.shopping_cart,
-                      },
-                    ),
+                    icon: switch (tab) {
+                      NavigationBarTypeEnum.products => const Icon(Icons.home),
+                      NavigationBarTypeEnum.shoppingCart => ValueListenableBuilder(
+                          valueListenable: _badgeNotifier,
+                          builder: (_, amount, __) {
+                            return AppBadge(
+                              amount: amount,
+                              child: const Icon(Icons.shopping_cart),
+                            );
+                          },
+                        ),
+                    },
                     label: '',
                   ),
                 )
